@@ -1,12 +1,6 @@
 ---
 name: prompt-engineer
-description: >
-  Expert prompt refinement engine that analyzes, interrogates, and rewrites any prompt into a
-  production-ready, one-shot-optimized Master Prompt. Use this skill whenever the user submits
-  a prompt they want improved, refined, or optimized — even if they just say "improve this
-  prompt", "make this better", "refine my prompt", "optimize this for Claude/Gemini", or pastes
-  a raw prompt without explanation. Always trigger this skill when the user's goal is to get a
-  sharper, more structured, model-ready version of a prompt they already have.
+description: "Analyzes, interrogates, and rewrites submitted prompts into production-ready, optimized Master Prompts for Claude. Covers role definition, constraint design, example structuring, reasoning depth calibration, and XML-tagged output formatting. Use when a user wants to improve, refine, restructure, or optimize any prompt — including when they just paste a raw prompt without explanation."
 ---
 
 # Prompt Engineer Skill
@@ -24,12 +18,13 @@ Prompt until your full analysis is complete.
 
 ---
 
-## Process: Follow These 5 Steps in Order
+## Process: Follow These 6 Steps in Order
 
 ### STEP 1 — CRITICAL ANALYSIS
 
 Carefully read the submitted prompt, then:
 
+- Apply the golden rule: "Show this prompt to a colleague with no context. If they'd be confused, Claude will be too." Flag every point of confusion.
 - Identify vague language, missing roles, unclear output expectations, and unstated constraints
 - Flag every assumption the model would have to make on the user's behalf
 - Note tone, format, or syntax issues specific to Gemini Pro or Claude
@@ -46,60 +41,81 @@ CONTEXT GAPS:
 1. [Question about audience or persona]
 2. [Question about output format]
 3. [Question about constraints or scope]
+4. [Question about tone or voice]
+5. [Question about examples or edge cases]
+6. [Does this task involve processing large context — documents, datasets, codebases? (triggers grounding and placement guidance)]
 ...
 ```
 
 - Wait for the user to respond before proceeding to Step 3
 - If the user answers partially or says [SKIP], proceed with clearly labeled assumptions:
   `[ASSUMPTION: ...]`
+- Identify whether the prompt is a **system prompt**, a **user-turn prompt**, or **both** — this
+  determines the output structure in Step 4
 
 ---
 
 ### STEP 3 — CHECKLIST REVIEW
 
-Evaluate the submitted prompt against every item below. For each item, state the status
-(**present / missing / partial**) and provide a specific, actionable fix — not just that
-something is missing:
+Evaluate the submitted prompt against every item in `references/checklist.md`. For each item,
+state the status (**present / missing / partial**) and provide a specific, actionable fix — not
+just that something is missing.
 
-```
-[ ] Role/Persona defined?
-[ ] Task stated clearly?
-[ ] Output format specified?
-[ ] Tone/voice defined?
-[ ] Constraints stated?
-[ ] Examples provided?
-[ ] Chain-of-thought triggered?
-[ ] Edge cases handled?
-[ ] Ambiguous pronouns or references?
-[ ] Overly broad or vague scope?
-[ ] Length/depth guidance given?
-[ ] Model-specific optimization applied?
-```
+See references/checklist.md for the full evaluation checklist.
 
 ---
 
 ### STEP 4 — MASTER PROMPT GENERATION
 
-Only after Steps 1–3 are complete, produce the rewritten prompt using this exact structure
+Only after Steps 1–3 are complete, produce the rewritten prompt using XML-tagged structure
 inside a code block:
 
-```
-[ROLE] — specific expert identity with relevant qualities
+```xml
+<role>specific expert identity with relevant qualities</role>
 
-[TASK] — clear, single-sentence objective
+<task>clear, single-sentence objective</task>
 
-[CONTEXT] — background, audience, purpose, front-loaded constraints
+<context>
+background, audience, purpose
+motivation: why accuracy/quality matters for this specific task
+stakes/impact, front-loaded constraints
+</context>
 
-[INSTRUCTIONS] — numbered for sequential steps, bullets for rules
+<instructions>numbered for sequential steps, bullets for rules</instructions>
 
-[OUTPUT FORMAT] — exact structure: headers, JSON, markdown, etc.
+<output_format>exact structure: headers, JSON, markdown, etc.</output_format>
 
-[CONSTRAINTS] — what to avoid, scope limits, tone rules
+<constraints>
+desired behaviors (what to do) + boundaries (what to avoid)
+scope limits, tone rules
+standard line: "If you are unsure about any claim, say so explicitly rather than generating a plausible-sounding answer."
+</constraints>
 
-[EXAMPLE] — input/output pair if applicable
+<examples>
+Include one ideal output, one common mistake, and one edge case. Wrap each in <example> tags:
+<example type="ideal">what a correct response looks like</example>
+<example type="mistake">what to avoid and why</example>
+<example type="edge_case">tricky input and how to handle it</example>
+</examples>
 ```
 
 Use `[PLACEHOLDERS]` for any variable the user must fill in.
+
+See examples/before-after.md for a complete transformation example.
+
+#### Output Branching by Prompt Type
+
+If Step 2 identified the prompt as a **system prompt**:
+- Maximize XML structure — system prompts benefit most from explicit section boundaries
+- Include `<role>` as the very first block
+
+If Step 2 identified the prompt as a **user-turn prompt**:
+- Lead with the task/question
+- Use imperative tone ("Analyze...", "Generate...", "Compare...")
+
+If Step 2 identified **both** (system + user turn pair):
+- Generate both: the system prompt sets persistent behavior, the user-turn prompt triggers the specific task
+- Clearly label which is which
 
 ---
 
@@ -112,6 +128,28 @@ WHY THESE CHANGES IMPROVE THE PROMPT:
 - [Change] → [Reason]
 ...
 ```
+
+Additionally verify:
+- Are instructions framed positively (what to do) and not only negatively (what to avoid)?
+- If large context is involved, is data placed at the top with query/instructions at the bottom?
+- Is the "uncertainty permission" line present in constraints?
+- Does the `<context>` block include explicit motivation (why this matters), not just background?
+
+---
+
+### STEP 6 — ITERATIVE REFINEMENT (if user provides feedback)
+
+If the user provides feedback on the Master Prompt:
+
+1. Acknowledge which specific elements the feedback targets
+2. Re-run the checklist items from `references/checklist.md` against the feedback
+3. Patch the Master Prompt — show only the changed sections with brief rationale for each change
+4. Re-run Step 5 (self-evaluation) on the patched version
+5. Present the updated Master Prompt
+
+Do not restart from Step 1. Do not re-ask context questions already answered. Iterate on the existing artifact.
+
+If the user says something like "looks good" or "ship it", confirm the Master Prompt is final and end.
 
 ---
 
