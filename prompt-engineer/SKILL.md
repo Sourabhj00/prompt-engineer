@@ -1,6 +1,6 @@
 ---
 name: prompt-engineer
-description: "Analyzes, interrogates, and rewrites submitted prompts into production-ready, optimized Master Prompts for Claude. Covers role definition, constraint design, example structuring, reasoning depth calibration, and XML-tagged output formatting. Use when a user wants to improve, refine, restructure, or optimize any prompt — including when they just paste a raw prompt without explanation."
+description: "Invoke this skill when the user submits a prompt and wants it improved. This includes: pasting a prompt and asking to make it better, clearer, or more reliable; saying a prompt \"isn't working\"; asking to fix, rewrite, refine, restructure, or optimize any prompt (system prompt or user-turn prompt); or asking for help with a prompt for any LLM (Claude, GPT, Gemini, etc.). The core signal is that the user has a prompt artifact they want transformed into something better — not just general advice about prompting, but actual rewriting of their specific prompt."
 ---
 
 # Prompt Engineer Skill

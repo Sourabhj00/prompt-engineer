@@ -1,0 +1,82 @@
+[
+  {
+    "query": "Improve this prompt: You are a helpful assistant that answers questions about Python.",
+    "should_trigger": true
+  },
+  {
+    "query": "Refine my prompt for generating unit tests",
+    "should_trigger": true
+  },
+  {
+    "query": "Optimize this for Claude: Write a detailed analysis of the given text.",
+    "should_trigger": true
+  },
+  {
+    "query": "You are an expert data analyst. Given a CSV file, analyze the trends and produce a summary report.",
+    "should_trigger": true
+  },
+  {
+    "query": "Make this prompt better: Summarize the following article in 3 bullet points.",
+    "should_trigger": true
+  },
+  {
+    "query": "Restructure this prompt so it works more reliably: List the pros and cons of remote work.",
+    "should_trigger": true
+  },
+  {
+    "query": "This prompt isn't working well, can you fix it? 'Tell me about machine learning'",
+    "should_trigger": true
+  },
+  {
+    "query": "Can you sharpen this prompt? I need Claude to review my code and suggest improvements.",
+    "should_trigger": true
+  },
+  {
+    "query": "Rewrite this prompt to be clearer: Explain how databases work to a beginner.",
+    "should_trigger": true
+  },
+  {
+    "query": "Help me optimize my system prompt for a customer support chatbot",
+    "should_trigger": true
+  },
+  {
+    "query": "Write me a Python script that reads a CSV file and plots a chart",
+    "should_trigger": false
+  },
+  {
+    "query": "Explain what prompt engineering is and why it matters",
+    "should_trigger": false
+  },
+  {
+    "query": "What is a system prompt and how does it differ from a user message?",
+    "should_trigger": false
+  },
+  {
+    "query": "Help me debug this Python code that throws a KeyError",
+    "should_trigger": false
+  },
+  {
+    "query": "Summarize this article about climate change",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a blog post about the future of AI",
+    "should_trigger": false
+  },
+  {
+    "query": "Create a new Claude Code skill for code review",
+    "should_trigger": false
+  },
+  {
+    "query": "What are best practices for fine-tuning large language models?",
+    "should_trigger": false
+  },
+  {
+    "query": "Build me a REST API with Express and MongoDB",
+    "should_trigger": false
+  },
+  {
+    "query": "How does Claude's context window work?",
+    "should_trigger": false
+  }
+]
